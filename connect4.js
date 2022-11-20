@@ -17,15 +17,15 @@ var board = []; // array of rows, each row is array of cells  (board[y][x])
 
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
-  for (let i = 0; i <= HEIGHT; i++){
+  for (let i = 0; i < HEIGHT; i++) {
     let secondarr = [];
-    for (let j = 0; j < WIDTH; j++){
+    for (let j = 0; j < WIDTH; j++) {
       secondarr.push(null)
     }
     board.push(secondarr);
   }
   return board;
-  
+
 
 }
 
@@ -33,15 +33,15 @@ function makeBoard() {
 
 function makeHtmlBoard() {
   // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
-  const htmlBoard= document.querySelector("#board")
+  const htmlBoard = document.querySelector("#board")
   // TODO: add comment for this code
   // creates top row for table, adds event listener to the table cells
-  var top = document.createElement("tr");
+  const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
 
   for (let x = 0; x < WIDTH; x++) {
-    var headCell = document.createElement("td");
+    const headCell = document.createElement("td");
     headCell.setAttribute("id", x);
     top.append(headCell);
   }
@@ -49,11 +49,11 @@ function makeHtmlBoard() {
 
   // TODO: add comment for this code
   // creates table elements
-  for (var y = 0; y < HEIGHT; y++) {
+  for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
-    for (var x = 0; x < WIDTH; x++) {
+    for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement("td");
-      cell.setAttribute("id", `r${y}-${x}`);
+      cell.setAttribute("id", `${y}-${x}`);
       row.append(cell);
     }
     htmlBoard.append(row);
@@ -64,8 +64,8 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
-  for (let y = board.length - 1; y > 0; y--){
-    if (board[y][x] == null){
+  for (let y = board.length - 1; y > 0; y--) {
+    if (board[y][x] == null) {
       return y
     }
   }
@@ -76,14 +76,12 @@ function findSpotForCol(x) {
 
 function placeInTable(y, x) {
   // TODO: make a div and insert into correct table cell
+  // debugger
   var div = document.createElement('div');
-  if (currPlayer == 1) {
-    div.className = "piece player1"
-  } else {
-    div.className = "piece player2"
-  }
+  div.className = `piece player${currPlayer}`
 
-  var cell = document.querySelector(`#r${y - 1}-${x}`)
+
+  var cell = document.getElementById(`${y}-${x}`)
   cell.appendChild(div);
 
 
@@ -95,7 +93,9 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
   // TODO: pop up alert message
-  alert('Game Over');
+  setTimeout(() => {
+    alert('Game Over')
+  }, 100);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -122,11 +122,11 @@ function handleClick(evt) {
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
 
-  let boardcopy = [...board];
-  boardcopy.shift();
-  if (boardcopy.every(x => x.every(j => j !== null))) {
-    endGame();
-  }
+  // let boardcopy = [...board];
+  // boardcopy.shift();
+  // if (boardcopy.every(x => x.every(j => j !== null))) {
+  //   endGame();
+  // }
 
   // switch players
   // TODO: switch currPlayer 1 <-> 2
@@ -152,6 +152,8 @@ function checkForWin() {
   }
 
   // TODO: read and understand this code. Add comments to help you.
+
+  // appears to check for 5 in a row vertically but works horizontally and diagonally.
 
   for (var y = 0; y < HEIGHT; y++) {
     for (var x = 0; x < WIDTH; x++) {
